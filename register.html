@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register | FutureGames</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="login-page">
+    <div class="login-container">
+        <h1>Sign In</h1>
+        <p>Create a new account</p>
+
+        <form id="registerForm">
+            <input type="text" placeholder="Full Name" required>
+            <input type="date" placeholder="Date of Birth" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <span id="passwordError" style="color: red; display: none;">Passwords do not match!</span>
+            <button type="submit">Sign In</button>
+        </form>
+
+        <p class="switch">
+            Already have an account?
+            <a href="login.html">Log In</a>
+        </p>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordError = document.getElementById('passwordError');
+        const registerForm = document.getElementById('registerForm');
+
+        // Check passwords match on input
+        function validatePasswords() {
+            if (confirmPasswordInput.value && passwordInput.value !== confirmPasswordInput.value) {
+                passwordError.style.display = 'block';
+            } else {
+                passwordError.style.display = 'none';
+            }
+        }
+
+        passwordInput.addEventListener('input', validatePasswords);
+        confirmPasswordInput.addEventListener('input', validatePasswords);
+
+        // Prevent form submission if passwords don't match
+        registerForm.addEventListener('submit', function (e) {
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                e.preventDefault();
+                passwordError.style.display = 'block';
+                alert('Passwords do not match! Please try again.');
+            }
+        });
+    </script>
+</body>
+
+</html>
