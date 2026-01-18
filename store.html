@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Store | FutureGames</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/products.js"></script>
+</head>
+
+<body>
+  <header>
+    <img src="assets/images/FutureGames-logo.svg" alt="FutureGames-logo" class="logo">
+    <div class="user-box">
+      <span id="helloUser"></span>
+      <button class="btn btn-outline" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <div class="store-wrap">
+    <div class="store-top">
+      <h1>Store</h1>
+      <button class="btn btn-primary" id="clearCartBtn">Clear Cart</button>
+    </div>
+
+    <div class="grid" id="productsGrid"></div>
+
+    <div class="cart">
+      <h2>Your Cart</h2>
+      <div id="cartEmpty">Cart is empty.</div>
+      <ul id="cartList" style="display:none;"></ul>
+    </div>
+  </div>
+
+  <script>
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!currentUser) {
+      window.location.href = 'login.html';
+    }
+
+    document.getElementById('helloUser').textContent =
+      currentUser ? `Hi, ${currentUser.fullName}` : '';
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    });
+
+    // Products array is now imported from js/products.js
+    // You can add more games directly in that file!
+
+    const productsGrid = document.getElementById('productsGrid');
+
+    function cartKey() {
+      return `cart_${currentUser.email}`;
+    }
+
+    function getCart() {
+      return JSON.parse(localStorage.getItem(cartKey()) || '[]');
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem(cartKey(), JSON.stringify(cart));
+    }
+
+    function addToCart(product) {
+      const cart = getCart();
+      cart.push(product);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function renderProducts() {
+      productsGrid.innerHTML = "";
+      products.forEach(p => {
+        const div = document.createElement('div');
+        div.className = "product";
+        div.innerHTML = `
+          <div class="product-media" style="background:${p.color}">
+            <img src="${p.image}" alt="${p.name}">
+          </div>
+          <div class="product-body">
+            <h3>${p.name}</h3>
+            <p class="meta">${p.genre} &middot; Rating: ${p.rating}</p>
+            <p class="desc">${p.description}</p>
+            <p class="price">Price: $${p.price}</p>
+            <button class="btn btn-primary" type="button">Add to cart</button>
+          </div>
+        `;
+        div.querySelector('button').addEventListener('click', () => addToCart(p));
+        productsGrid.appendChild(div);
+      });
+    }
+
+    const cartEmpty = document.getElementById('cartEmpty');
+    const cartList = document.getElementById('cartList');
+
+    function renderCart() {
+      const cart = getCart();
+      if (cart.length === 0) {
+        cartEmpty.style.display = "block";
+        cartList.style.display = "none";
+        cartList.innerHTML = "";
+        return;
+      }
+
+      cartEmpty.style.display = "none";
+      cartList.style.display = "block";
+      cartList.innerHTML = cart.map(item => `<li>${item.name} - $${item.price}</li>`).join("");
+    }
+
+    document.getElementById('clearCartBtn').addEventListener('click', () => {
+      saveCart([]);
+      renderCart();
+    });
+
+    renderProducts();
+    renderCart();
+  </script>
+</body>
+
+</html>
