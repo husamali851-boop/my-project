@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Library | FutureGames</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="nav-left">
+            <img src="assets/images/FutureGames-logo.svg" class="logo">
+            <a href="store.html" class="nav-btn">Store</a>
+            <button class="nav-btn active" disabled>Library</button>
+        </div>
+        <div class="user-box">
+            <span id="helloUser"></span>
+        </div>
+    </header>
+
+    <div class="store-wrap">
+        <h1>My Library</h1>
+        <div class="grid" id="libraryGrid"></div>
+        <p id="emptyLibrary">Your library is empty.</p>
+    </div>
+
+    <script>
+        const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        if (!currentUser) window.location.href = 'login.html';
+        document.getElementById('helloUser').textContent = `Hi, ${currentUser.fullName}`;
+
+        const libraryKey = `library_${currentUser.email}`;
+        const library = JSON.parse(localStorage.getItem(libraryKey) || '[]');
+
+        const grid = document.getElementById('libraryGrid');
+        const empty = document.getElementById('emptyLibrary');
+
+        if (library.length === 0) {
+            empty.style.display = 'block';
+        } else {
+            empty.style.display = 'none';
+            grid.innerHTML = library.map(game => `
+    <div class="product">
+        <div class="product-media" style="background:${game.color}">
+            <img src="${game.image}" alt="${game.name}">
+        </div>
+        <div class="product-body">
+            <h3>${game.name}</h3>
+            <p class="meta">${game.genre}</p>
+            <p class="desc">${game.description}</p>
+            <button class="install-btn" disabled>Install</button>
+        </div>
+    </div>
+    `).join('');
+        }
+    </script>
+
+</body>
+
+</html>

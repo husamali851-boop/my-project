@@ -120,4 +120,133 @@
   </script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Store | FutureGames</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/products.js" defer></script>
+</head>
+
+<body>
+
+  <header>
+    <div class="nav-left">
+      <img src="assets/images/FutureGames-logo.svg" class="logo">
+      <button class="nav-btn active" disabled>Store</button>
+      <a href="library.html" class="nav-btn">Library</a>
+    </div>
+    <div class="user-box">
+      <span id="helloUser"></span>
+      <button class="btn btn-outline" id="logoutBtn">Log out</button>
+    </div>
+  </header>
+
+  <div class="store-wrap">
+    <h1>Store</h1>
+
+    <div class="grid" id="productsGrid"></div>
+
+    <div class="cart">
+      <h2>Your Cart</h2>
+      <div id="cartEmpty">Cart is empty.</div>
+      <ul id="cartList" style="display:none;"></ul>
+      <button class="btn btn-primary" id="submitCartBtn">ِِِِADD</button>
+    </div>
+  </div>
+
+  <script>
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+    if (!currentUser) window.location.href = 'login.html';
+    document.getElementById('helloUser').textContent = `Hi, ${currentUser.fullName}`;
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('currentUser');
+      window.location.href = 'login.html';
+    });
+
+    const productsGrid = document.getElementById('productsGrid');
+    const cartEmpty = document.getElementById('cartEmpty');
+    const cartList = document.getElementById('cartList');
+
+    function cartKey() { return `cart_${currentUser.email}`; }
+    function libraryKey() { return `library_${currentUser.email}`; }
+
+    function getCart() { return JSON.parse(localStorage.getItem(cartKey()) || '[]'); }
+    function saveCart(cart) { localStorage.setItem(cartKey(), JSON.stringify(cart)); }
+
+    function addToCart(product) {
+      const cart = getCart();
+      cart.push(product);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function removeFromCart(id) {
+      let cart = getCart();
+      cart = cart.filter(item => item.id !== id);
+      saveCart(cart);
+      renderCart();
+    }
+
+
+    function renderProducts() {
+      const products = window.products || [];
+      productsGrid.innerHTML = "";
+      products.forEach(p => {
+        const div = document.createElement('div');
+        div.className = "product";
+        div.innerHTML = `
+          <div class="product-media" style="background:${p.color}">
+              <img src="${p.image}" alt="${p.name}">
+          </div>
+          <div class="product-body">
+              <h3>${p.name}</h3>
+              <p class="meta">${p.genre} &middot; Rating: ${p.rating}</p>
+              <p class="desc">${p.description}</p>
+              <p class="price">Price: $${p.price}</p>
+              <button class="btn btn-primary">Add to Cart</button>
+          </div>`;
+        div.querySelector('button').addEventListener('click', () => addToCart(p));
+        productsGrid.appendChild(div);
+      });
+    }
+
+    function renderCart() {
+      const cart = getCart();
+      if (cart.length === 0) {
+        cartEmpty.style.display = "block";
+        cartList.style.display = "none";
+        cartList.innerHTML = "";
+        return;
+      }
+      cartEmpty.style.display = "none";
+      cartList.style.display = "block";
+      cartList.innerHTML = cart.map(item => `<li>${item.name} <button onclick="removeFromCart(${item.id})">Remove</button></li>`).join("");
+    }
+
+    document.getElementById('submitCartBtn').addEventListener('click', () => {
+      const cart = getCart();
+      if (cart.length === 0) { alert("Cart is empty!"); return; }
+      let library = JSON.parse(localStorage.getItem(libraryKey()) || '[]');
+      cart.forEach(item => { if (!library.find(g => g.id === item.id)) library.push(item); });
+      localStorage.setItem(libraryKey(), JSON.stringify(library));
+      saveCart([]);
+      renderCart();
+      window.location.href = "library.html";
+    });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+      renderCart();
+    });
+  </script>
+</body>
+
+>>>>>>> 37ec7e8 (new changes)
+
 </html>

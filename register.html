@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 
@@ -92,4 +93,100 @@
     </script>
 </body>
 
+=======
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Register | FutureGames</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="login-page">
+    <div class="login-container">
+        <h1>Sign In</h1>
+        <p>Create a new account</p>
+
+        <form id="registerForm">
+            <input type="text" id="fullName" placeholder="Full Name" required>
+            <input type="date" id="dateOfBirth" placeholder="Date of Birth" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <span id="passwordError" style="color: red; display: none;">Passwords do not match!</span>
+            <span id="registerSuccess" style="color: green; display: none;">Account created successfully!
+                Redirecting...</span>
+            <button type="submit">Sign In</button>
+        </form>
+
+        <p class="switch">
+            Already have an account?
+            <a href="login.html">Log In</a>
+        </p>
+    </div>
+
+    <script>
+        const fullNameInput = document.getElementById('fullName');
+        const dateOfBirthInput = document.getElementById('dateOfBirth');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const passwordError = document.getElementById('passwordError');
+        const registerSuccess = document.getElementById('registerSuccess');
+        const registerForm = document.getElementById('registerForm');
+
+        // Check passwords match on input
+        function validatePasswords() {
+            if (confirmPasswordInput.value && passwordInput.value !== confirmPasswordInput.value) {
+                passwordError.style.display = 'block';
+            } else {
+                passwordError.style.display = 'none';
+            }
+        }
+
+        passwordInput.addEventListener('input', validatePasswords);
+        confirmPasswordInput.addEventListener('input', validatePasswords);
+
+        // Handle form submission
+        registerForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Validate passwords match
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                passwordError.style.display = 'block';
+                alert('Passwords do not match! Please try again.');
+                return;
+            }
+
+            // Check if email already exists
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const emailExists = users.some(user => user.email === emailInput.value);
+
+            if (emailExists) {
+                alert('Email already registered! Please use a different email or log in.');
+                return;
+            }
+
+            // Save user data to localStorage
+            const newUser = {
+                fullName: fullNameInput.value,
+                dateOfBirth: dateOfBirthInput.value,
+                email: emailInput.value,
+                password: passwordInput.value
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Show success message and redirect
+            registerSuccess.style.display = 'block';
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        });
+    </script>
+</body>
+
+>>>>>>> 37ec7e8 (new changes)
 </html>
