@@ -5,141 +5,76 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Store | FutureGames</title>
+
   <link rel="stylesheet" href="css/style.css">
   <script src="js/products.js"></script>
-</head>
-
-<body>
-  <header>
-    <img src="assets/images/FutureGames-logo.svg" alt="FutureGames-logo" class="logo">
-    <div class="user-box">
-      <span id="helloUser"></span>
-      <button class="btn btn-outline" id="logoutBtn">Log out</button>
-    </div>
-  </header>
-
-  <div class="store-wrap">
-    <div class="store-top">
-      <h1>Store</h1>
-      <button class="btn btn-primary" id="clearCartBtn">Clear Cart</button>
-    </div>
-
-    <div class="grid" id="productsGrid"></div>
-
-    <div class="cart">
-      <h2>Your Cart</h2>
-      <div id="cartEmpty">Cart is empty.</div>
-      <ul id="cartList" style="display:none;"></ul>
-    </div>
-  </div>
-
-  <script>
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    if (!currentUser) {
-      window.location.href = 'login.html';
+  <style>
+    /* ===== Fix for product images ===== */
+    .product-media {
+      height: 200px; /* taller so image is visible */
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      background-color: #e0e0e0; /* neutral background for JPGs */
     }
 
-    document.getElementById('helloUser').textContent =
-      currentUser ? `Hi, ${currentUser.fullName}` : '';
-
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('currentUser');
-      window.location.href = 'login.html';
-    });
-
-    // Products array is now imported from js/products.js
-    // You can add more games directly in that file!
-
-    const productsGrid = document.getElementById('productsGrid');
-
-    function cartKey() {
-      return `cart_${currentUser.email}`;
+    .product-media img {
+      width: auto;
+      height: 100%;
+      object-fit: contain; /* show full image */
+      display: block;
     }
 
-    function getCart() {
-      return JSON.parse(localStorage.getItem(cartKey()) || '[]');
+    /* ===== Fix for description readability ===== */
+    .product-body h3 {
+      font-size: 18px;
+      color: #111827;
+      margin-bottom: 6px;
     }
 
-    function saveCart(cart) {
-      localStorage.setItem(cartKey(), JSON.stringify(cart));
+    .product-body .meta,
+    .product-body .desc,
+    .product-body .price {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 6px;
     }
 
-    function addToCart(product) {
-      const cart = getCart();
-      cart.push(product);
-      saveCart(cart);
-      renderCart();
+    /* Product card styling */
+    .product {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    function renderProducts() {
-      productsGrid.innerHTML = "";
-      products.forEach(p => {
-        const div = document.createElement('div');
-        div.className = "product";
-        div.innerHTML = `
-          <div class="product-media" style="background:${p.color}">
-            <img src="${p.image}" alt="${p.name}">
-          </div>
-          <div class="product-body">
-            <h3>${p.name}</h3>
-            <p class="meta">${p.genre} &middot; Rating: ${p.rating}</p>
-            <p class="desc">${p.description}</p>
-            <p class="price">Price: $${p.price}</p>
-            <button class="btn btn-primary" type="button">Add to cart</button>
-          </div>
-        `;
-        div.querySelector('button').addEventListener('click', () => addToCart(p));
-        productsGrid.appendChild(div);
-      });
+    .add-cart {
+      cursor: pointer;
     }
 
-    const cartEmpty = document.getElementById('cartEmpty');
-    const cartList = document.getElementById('cartList');
-
-    function renderCart() {
-      const cart = getCart();
-      if (cart.length === 0) {
-        cartEmpty.style.display = "block";
-        cartList.style.display = "none";
-        cartList.innerHTML = "";
-        return;
-      }
-
-      cartEmpty.style.display = "none";
-      cartList.style.display = "block";
-      cartList.innerHTML = cart.map(item => `<li>${item.name} - $${item.price}</li>`).join("");
+    /* Cart styling */
+    .cart button {
+      margin-top: 6px;
+      margin-right: 6px;
     }
-
-    document.getElementById('clearCartBtn').addEventListener('click', () => {
-      saveCart([]);
-      renderCart();
-    });
-
-    renderProducts();
-    renderCart();
-  </script>
-</body>
-
-=======
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Store | FutureGames</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script src="js/products.js" defer></script>
+  </style>
 </head>
 
 <body>
 
   <header>
     <div class="nav-left">
-      <img src="assets/images/FutureGames-logo.svg" class="logo">
-      <button class="nav-btn active" disabled>Store</button>
+      <img src="assets/images/FutureGames-logo.svg" class="logo" alt="logo">
+      <a href="store.html" class="nav-btn active">Store</a>
       <a href="library.html" class="nav-btn">Library</a>
     </div>
+
     <div class="user-box">
       <span id="helloUser"></span>
       <button class="btn btn-outline" id="logoutBtn">Log out</button>
@@ -149,34 +84,38 @@
   <div class="store-wrap">
     <h1>Store</h1>
 
+    <!-- PRODUCTS -->
     <div class="grid" id="productsGrid"></div>
 
+    <!-- CART -->
     <div class="cart">
       <h2>Your Cart</h2>
       <div id="cartEmpty">Cart is empty.</div>
       <ul id="cartList" style="display:none;"></ul>
-      <button class="btn btn-primary" id="submitCartBtn">ِِِِADD</button>
+
+      <button class="btn btn-success" id="addToLibraryBtn">Add to Library</button>
+      <button class="btn btn-primary" id="clearCartBtn">Clear Cart</button>
     </div>
   </div>
 
   <script>
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-    if (!currentUser) window.location.href = 'login.html';
-    document.getElementById('helloUser').textContent = `Hi, ${currentUser.fullName}`;
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('currentUser');
-      window.location.href = 'login.html';
-    });
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    if (!currentUser) location.href = "login.html";
 
-    const productsGrid = document.getElementById('productsGrid');
-    const cartEmpty = document.getElementById('cartEmpty');
-    const cartList = document.getElementById('cartList');
+    document.getElementById("helloUser").textContent = `Hi, ${currentUser.fullName}`;
 
-    function cartKey() { return `cart_${currentUser.email}`; }
-    function libraryKey() { return `library_${currentUser.email}`; }
+    document.getElementById("logoutBtn").onclick = () => {
+      localStorage.removeItem("currentUser");
+      location.href = "login.html";
+    };
 
-    function getCart() { return JSON.parse(localStorage.getItem(cartKey()) || '[]'); }
-    function saveCart(cart) { localStorage.setItem(cartKey(), JSON.stringify(cart)); }
+    const cartKey = `cart_${currentUser.email}`;
+    const libraryKey = `library_${currentUser.email}`;
+
+    function getCart() { return JSON.parse(localStorage.getItem(cartKey) || "[]"); }
+    function saveCart(cart) { localStorage.setItem(cartKey, JSON.stringify(cart)); }
+    function getLibrary() { return JSON.parse(localStorage.getItem(libraryKey) || "[]"); }
+    function saveLibrary(lib) { localStorage.setItem(libraryKey, JSON.stringify(lib)); }
 
     function addToCart(product) {
       const cart = getCart();
@@ -185,35 +124,15 @@
       renderCart();
     }
 
-    function removeFromCart(id) {
-      let cart = getCart();
-      cart = cart.filter(item => item.id !== id);
+    function removeFromCart(index) {
+      const cart = getCart();
+      cart.splice(index, 1);
       saveCart(cart);
       renderCart();
     }
 
-
-    function renderProducts() {
-      const products = window.products || [];
-      productsGrid.innerHTML = "";
-      products.forEach(p => {
-        const div = document.createElement('div');
-        div.className = "product";
-        div.innerHTML = `
-          <div class="product-media" style="background:${p.color}">
-              <img src="${p.image}" alt="${p.name}">
-          </div>
-          <div class="product-body">
-              <h3>${p.name}</h3>
-              <p class="meta">${p.genre} &middot; Rating: ${p.rating}</p>
-              <p class="desc">${p.description}</p>
-              <p class="price">Price: $${p.price}</p>
-              <button class="btn btn-primary">Add to Cart</button>
-          </div>`;
-        div.querySelector('button').addEventListener('click', () => addToCart(p));
-        productsGrid.appendChild(div);
-      });
-    }
+    const cartList = document.getElementById("cartList");
+    const cartEmpty = document.getElementById("cartEmpty");
 
     function renderCart() {
       const cart = getCart();
@@ -223,30 +142,63 @@
         cartList.innerHTML = "";
         return;
       }
+
       cartEmpty.style.display = "none";
       cartList.style.display = "block";
-      cartList.innerHTML = cart.map(item => `<li>${item.name} <button onclick="removeFromCart(${item.id})">Remove</button></li>`).join("");
+
+      cartList.innerHTML = cart.map((game, index) => `
+        <li style="display:flex; justify-content:space-between; align-items:center;">
+          <span>${game.name} - $${game.price}</span>
+          <button onclick="removeFromCart(${index})">Remove</button>
+        </li>
+      `).join("");
     }
 
-    document.getElementById('submitCartBtn').addEventListener('click', () => {
+    document.getElementById("addToLibraryBtn").onclick = () => {
       const cart = getCart();
-      if (cart.length === 0) { alert("Cart is empty!"); return; }
-      let library = JSON.parse(localStorage.getItem(libraryKey()) || '[]');
-      cart.forEach(item => { if (!library.find(g => g.id === item.id)) library.push(item); });
-      localStorage.setItem(libraryKey(), JSON.stringify(library));
+      if (cart.length === 0) return;
+      const library = getLibrary();
+      cart.forEach(game => {
+        if (!library.find(g => g.id === game.id)) library.push(game);
+      });
+      saveLibrary(library);
       saveCart([]);
       renderCart();
-      window.location.href = "library.html";
-    });
+      alert("Games added to library!");
+    };
 
-
-    document.addEventListener('DOMContentLoaded', () => {
-      renderProducts();
+    document.getElementById("clearCartBtn").onclick = () => {
+      saveCart([]);
       renderCart();
-    });
+    };
+
+    const grid = document.getElementById("productsGrid");
+
+    function renderProducts() {
+      grid.innerHTML = "";
+      window.products.forEach(p => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `
+          <div class="product-media">
+            <img src="${p.image}" alt="${p.name}">
+          </div>
+          <div class="product-body">
+            <h3>${p.name}</h3>
+            <p class="meta">${p.genre} · Rating: ${p.rating}</p>
+            <p class="desc">${p.description}</p>
+            <p class="price">Price: $${p.price}</p>
+            <button class="btn btn-primary add-cart">Add to Cart</button>
+          </div>
+        `;
+        grid.appendChild(div);
+
+        div.querySelector(".add-cart").addEventListener("click", () => addToCart(p));
+      });
+    }
+
+    renderProducts();
+    renderCart();
   </script>
 </body>
-
->>>>>>> 37ec7e8 (new changes)
-
 </html>
