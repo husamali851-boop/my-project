@@ -1,0 +1,299 @@
+/* ===== General resets (needed for store) ===== */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(180deg, #0b1220 0%, #1b1338 100%);
+    color: #eee;
+    scroll-behavior: smooth;
+}
+
+/* ===== Header ===== */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background-color: #0f0f1a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+header .logo {
+    height: 60px;
+    flex-shrink: 0;
+    min-width: 150px;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav-btn:hover {
+    background: #1d4ed8;
+}
+
+.nav-btn.active,
+.nav-btn:disabled {
+    background: #2563eb;
+    color: white;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* User box */
+.user-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+}
+
+.btn {
+    padding: 10px 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.btn-outline {
+    background: #f1f5f9;
+    border: 1px solid #2563eb;
+    color: #2563eb;
+}
+
+.btn-outline:hover {
+    background: #e0e7ff;
+}
+
+/* ===== Store Products ===== */
+.store-wrap {
+    max-width: 1000px;
+    margin: 120px auto 40px;
+    padding: 0 16px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.product {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #b80b28;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.product-media {
+    height: 150px; /* adjust height */
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.product-media img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.product-description {
+    color: #111; /* darker for readability */
+}
+
+/* Cart */
+.cart {
+    margin-top: 26px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.cart h2 {
+    color: #2563eb;
+}
+
+.cart ul {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    color: #1e293b;
+}
+
+.cart li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.cart li button {
+    background: #ef4444;
+    border: none;
+    padding: 2px 8px;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Library page (if any products show as owned) */
+.owned {
+    color: #16a34a;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.install-btn {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    margin-top: 6px;
+    cursor: not-allowed;
+}
+
+#emptyLibrary {
+    color: #64748b;
+    margin-top: 30px;
+}
+
+/* ===== Popular Games Carousel ===== */
+.popular-game-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+    border: 2px solid #2563eb;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #0b1220 0%, #1b1338 100%);
+    padding: 10px;
+    position: relative;
+}
+
+.popular-game-wrap h2 {
+    color: #00ffff;
+    margin-bottom: 10px;
+}
+
+#popularGameCanvas {
+    border: 2px solid #00ffff;
+    border-radius: 8px;
+    background-color: #111827;
+    width: 80%;
+    height: 300px;
+}
+
+/* Carousel Arrows */
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 32px;
+    color: #00ffff;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    user-select: none;
+    z-index: 10;
+}
+
+#carouselLeft {
+    left: 10px;
+}
+
+#carouselRight {
+    right: 10px;
+}
+
+.carousel-arrow:hover {
+    background: rgba(0, 255, 255, 0.5);
+}
+
+@media (max-width: 800px) {
+    #popularGameCanvas {
+        width: 100%;
+        height: 200px;
+    }
+}
+
+/* FIX product description readability */
+.product .desc {
+    color: #1e293b;          /* dark readable text */
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 1;
+    margin: 8px 0;
+}
+
+/* FIX all product text readability */
+.product .product-body h3 {
+    color: #111827;
+    font-size: 18px;
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.product .product-body .meta {
+    color: #1e293b;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.product .product-body .price {
+    color: #111827;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.product .product-body .desc {
+    color: #1e293b;
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 1;
+    margin: 6px 0;
+}

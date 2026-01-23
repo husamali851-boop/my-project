@@ -6,62 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Store | FutureGames</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/store.css">
   <script src="js/products.js"></script>
   <style>
-    /* ===== Fix for product images ===== */
-    .product-media {
-      height: 200px; /* taller so image is visible */
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-      background-color: #e0e0e0; /* neutral background for JPGs */
-    }
-
-    .product-media img {
+    /* Fix View Game button sizing inside product-body */
+    .product-body .view-game {
+      display: inline-block;
       width: auto;
-      height: 100%;
-      object-fit: contain; /* show full image */
-      display: block;
-    }
-
-    /* ===== Fix for description readability ===== */
-    .product-body h3 {
-      font-size: 18px;
-      color: #111827;
-      margin-bottom: 6px;
-    }
-
-    .product-body .meta,
-    .product-body .desc,
-    .product-body .price {
+      padding: 8px 14px;
       font-size: 14px;
-      color: #333;
-      margin-bottom: 6px;
-    }
-
-    /* Product card styling */
-    .product {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      border: 1px solid #e5e7eb;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .add-cart {
-      cursor: pointer;
-    }
-
-    /* Cart styling */
-    .cart button {
+      text-align: center;
       margin-top: 6px;
-      margin-right: 6px;
     }
   </style>
 </head>
@@ -84,10 +39,18 @@
   <div class="store-wrap">
     <h1>Store</h1>
 
-    <!-- PRODUCTS -->
+    <!-- ===== Popular Games Carousel ===== -->
+    <div class="popular-game-wrap">
+      <h2>Popular Games</h2>
+      <button id="carouselLeft" class="carousel-arrow">&#10094;</button>
+      <canvas id="popularGameCanvas"></canvas>
+      <button id="carouselRight" class="carousel-arrow">&#10095;</button>
+    </div>
+
+    <!-- ===== PRODUCTS GRID ===== -->
     <div class="grid" id="productsGrid"></div>
 
-    <!-- CART -->
+    <!-- ===== CART ===== -->
     <div class="cart">
       <h2>Your Cart</h2>
       <div id="cartEmpty">Cart is empty.</div>
@@ -99,11 +62,10 @@
   </div>
 
   <script>
+    // ===== User Logic =====
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
     if (!currentUser) location.href = "login.html";
-
     document.getElementById("helloUser").textContent = `Hi, ${currentUser.fullName}`;
-
     document.getElementById("logoutBtn").onclick = () => {
       localStorage.removeItem("currentUser");
       location.href = "login.html";
@@ -142,10 +104,8 @@
         cartList.innerHTML = "";
         return;
       }
-
       cartEmpty.style.display = "none";
       cartList.style.display = "block";
-
       cartList.innerHTML = cart.map((game, index) => `
         <li style="display:flex; justify-content:space-between; align-items:center;">
           <span>${game.name} - $${game.price}</span>
@@ -172,8 +132,8 @@
       renderCart();
     };
 
+    // ===== Render Products from products.js =====
     const grid = document.getElementById("productsGrid");
-
     function renderProducts() {
       grid.innerHTML = "";
       window.products.forEach(p => {
@@ -189,16 +149,65 @@
             <p class="desc">${p.description}</p>
             <p class="price">Price: $${p.price}</p>
             <button class="btn btn-primary add-cart">Add to Cart</button>
+            ${p.id === 1 ? '<a href="game1.html" class="btn btn-outline view-game">View Game</a>' : ''}
           </div>
         `;
         grid.appendChild(div);
 
+        // Add to cart button
         div.querySelector(".add-cart").addEventListener("click", () => addToCart(p));
       });
     }
 
     renderProducts();
     renderCart();
+
+    // ===== Popular Games Carousel =====
+    const canvas = document.getElementById('popularGameCanvas');
+    const ctx = canvas.getContext('2d');
+    const popularImages = [
+      "assets/images/games/popular1.jpg",
+      "assets/images/games/popular2.jpg",
+      "assets/images/games/popular3.jpg",
+      "assets/images/games/popular4.jpg"
+    ];
+    let currentIndex = 0;
+
+    function resizeCanvas() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+      drawImage();
+    }
+
+    function drawImage() {
+      const img = new Image();
+      img.src = popularImages[currentIndex];
+      img.onload = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % popularImages.length;
+      drawImage();
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + popularImages.length) % popularImages.length;
+      drawImage();
+    }
+
+    document.getElementById('carouselRight').addEventListener('click', nextImage);
+    document.getElementById('carouselLeft').addEventListener('click', prevImage);
+
+    // Auto slide every 3 seconds
+    setInterval(nextImage, 3000);
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
   </script>
+
 </body>
 </html>

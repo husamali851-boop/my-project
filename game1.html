@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Adventure | FutureGames</title>
+    <link rel="stylesheet" href="css/game1.css">
+    <style>
+        /* ===== General resets ===== */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(180deg, #0b1220 0%, #1b1338 100%);
+            color: #eee;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            background-color: #0f0f1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            z-index: 100;
+            box-sizing: border-box;
+        }
+
+        header .logo {
+            height: 60px;
+        }
+
+        /* ===== Page Layout ===== */
+        .game-page {
+            max-width: 1200px;
+            margin: 120px auto 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 0 16px;
+        }
+
+        /* ===== Left Column ===== */
+        .left-column {
+            flex: 1 1 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .left-column img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+            background: #111827;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .rating {
+            font-size: 18px;
+            color: #facc15;
+            font-weight: 700;
+        }
+
+        .genre {
+            font-size: 16px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .description {
+            font-size: 16px;
+            color: #e5e7eb;
+            line-height: 1.6;
+            background: #1b1338;
+            padding: 16px;
+            border-radius: 12px;
+        }
+
+        /* ===== Right Column ===== */
+        .right-column {
+            flex: 0 0 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .buy-btn, .wishlist-btn, .gift-btn {
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .buy-btn {
+            background: #2563eb;
+            color: white;
+        }
+
+        .buy-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .wishlist-btn, .gift-btn {
+            background: #0f0f1a;
+            border: 1px solid #2563eb;
+            color: #2563eb;
+        }
+
+        .wishlist-btn:hover, .gift-btn:hover {
+            background: #1b1338;
+        }
+
+        /* ===== System Requirements ===== */
+        .system-req {
+            max-width: 1200px;
+            margin: 60px auto 40px;
+            padding: 20px;
+            background: #111827;
+            border-radius: 12px;
+            border: 1px solid #2563eb;
+        }
+
+        .system-req h3 {
+            font-size: 20px;
+            color: #00ffff;
+            margin-bottom: 12px;
+        }
+
+        .system-req ul {
+            list-style: disc;
+            padding-left: 20px;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1000px) {
+            .game-page {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .right-column {
+                width: 100%;
+            }
+
+            .left-column img {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-left">
+        <img src="assets/images/FutureGames-logo.svg" class="logo">
+        <a href="store.html" class="nav-btn">Store</a>
+        <a href="library.html" class="nav-btn">Library</a>
+    </div>
+</header>
+
+<div class="game-page">
+    <!-- Left column: images + info -->
+    <div class="left-column">
+        <img src="assets/images/games/game1.jpg" alt="Cyber Adventure">
+        <div class="rating">⭐ 4.6</div>
+        <div class="genre">Action RPG</div>
+        <div class="description">
+            A neon-lit open world adventure in a cyber metropolis. Explore the city, complete quests, and fight enemies with advanced tech and cyber abilities.
+        </div>
+    </div>
+
+    <!-- Right column: purchase buttons -->
+    <div class="right-column">
+        <button class="buy-btn">Buy Now - $59</button>
+        <button class="wishlist-btn">Add to Wishlist</button>
+        <button class="gift-btn">Send as Gift</button>
+    </div>
+</div>
+
+<!-- System Requirements -->
+<div class="store-wrap system-req">
+    <h3>Minimum System Requirements</h3>
+    <ul>
+        <li>OS: Windows 10</li>
+        <li>Processor: Intel i5 or equivalent</li>
+        <li>Memory: 8 GB RAM</li>
+        <li>Graphics: NVIDIA GTX 960 / AMD Radeon R9 380</li>
+        <li>Storage: 50 GB available space</li>
+    </ul>
+</div>
+
+</body>
+</html>
